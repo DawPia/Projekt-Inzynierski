@@ -1,0 +1,10 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+staticfiles/
+.vscode/
+.idea/

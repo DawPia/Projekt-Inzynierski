@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>System Doboru Diet - Projekt Inżynierski</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --primary-hover: #1b4332;
+            --accent-green: #52b788;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-green);
+        }
+
+        .nav-menu .btn-nav {
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-nav:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .nav-menu .btn-logout {
+            color: #dc3545;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .hero {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 45px 30px;
+            text-align: center; 
+            margin-bottom: 35px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .hero h1 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+            margin: 0 auto 15px auto;
+            font-weight: 700;
+            max-width: 800px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 0 auto 25px auto;
+            max-width: 750px;
+            line-height: 1.6;
+        }
+
+        .btn-main {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .btn-main:hover {
+            background: var(--primary-hover);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-green);
+            margin-top: 0;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .card-link {
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Górny pasek nawigacyjny -->
+    <header>
+        <a href="{% url 'home' %}" class="logo">System Doboru Diet</a>
+        <nav class="nav-menu">
+            <a href="{% url 'diet_list' %}">Katalog Diet</a>
+            <a href="{% url 'dish_list' %}">Katalog Dań</a>
+            <a href="{% url 'calculator' %}">Kalkulator Kaloryczny</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Mój Profil</a>
+                <a href="{% url 'logout' %}" class="btn-logout">Wyloguj</a>
+            {% else %}
+                <a href="{% url 'login' %}">Logowanie</a>
+                <a href="{% url 'register' %}" class="btn-nav">Rejestracja</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- Zawartość główna -->
+    <div class="container">
+        
+        <!-- Sekcja Hero - wyśrodkowana -->
+        <div class="hero">
+            <h1>System Wspomagania Doboru i Przeglądu Diet</h1>
+            <p>
+                Aplikacja internetowa stworzona w ramach projektu inżynierskiego, umożliwiająca wygodny dostęp do katalogu diet oraz potraw. 
+                System wspiera użytkowników w doborze optymalnego planu żywieniowego poprzez analizę preferencji w dedykowanym quizie ankietowym.
+            </p>
+            <a href="{% url 'quiz' %}" class="btn-main">Uruchom Quiz Ewaluacyjny</a>
+        </div>
+
+        <!-- Kafelki modułów systemowych -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div>
+                    <h3>Moduł Quizu i Dopasowania</h3>
+                    <p>Mechanizm ankietowy przetwarzający odpowiedzi użytkownika i przypisujący punkty do tagów w celu wskazania najlepszych propozycji diet.</p>
+                </div>
+                <a href="{% url 'quiz' %}" class="card-link">Przejdź do quizu →</a>
+            </div>
+
+            <div class="feature-card">
+                <div>
+                    <h3>Katalog Diet i Dań</h3>
+                    <p>Relacyjna baza danych zawierająca pliki dietetyczne, powiązane potrawy, parametry makroskładników oraz filtry wyszukiwania.</p>
+                </div>
+                <a href="{% url 'diet_list' %}" class="card-link">Przeglądaj katalogi →</a>
+            </div>
+
+            <div class="feature-card">
+                <div>
+                    <h3>Kalkulator Biometryczny</h3>
+                    <p>Moduł obliczeniowy wyznaczający wskaźnik BMI, zapotrzebowanie kaloryczne (BMR/TDEE) oraz makroskładniki.</p>
+                </div>
+                <a href="{% url 'calculator' %}" class="card-link">Uruchom kalkulator →</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

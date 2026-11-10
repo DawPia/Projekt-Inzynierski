@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Mój Profil - System Doboru Diet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --primary-hover: #1b4332;
+            --accent-green: #52b788;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-green);
+        }
+
+        .nav-menu .btn-nav {
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-nav:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .nav-menu .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-logout:hover {
+            background: #c82333;
+            color: white;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 25px 20px;
+        }
+
+        .welcome-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .welcome-box h1 {
+            color: var(--primary-green);
+            font-size: 1.4rem;
+            margin: 0 0 4px 0;
+            font-weight: 700;
+        }
+
+        .welcome-box p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .card h3 {
+            color: var(--primary-green);
+            margin: 0 0 12px 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calc-content {
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .calc-content p {
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 4px;
+        }
+
+        .calc-content p:last-of-type {
+            border-bottom: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-green);
+            color: white;
+            padding: 9px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .recommendations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .diet-card {
+            background: #fdfdfd;
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .diet-card.top-match {
+            border-left: 4px solid var(--primary-green);
+            background: #f4fbf7;
+        }
+
+        .diet-info h4 {
+            margin: 0 0 2px 0;
+            font-size: 0.88rem;
+        }
+
+        .diet-info h4 a {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .diet-info h4 a:hover {
+            color: var(--primary-green);
+            text-decoration: underline;
+        }
+
+        .diet-info p {
+            margin: 0;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .diet-meta {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        .score-badge {
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: var(--primary-green);
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+        }
+
+        .link-btn {
+            color: var(--primary-green);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .link-btn:hover {
+            text-decoration: underline;
+        }
+
+        .tabs-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid var(--primary-green);
+            background: white;
+            color: var(--primary-green);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .favorites-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .favorite-item {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fdfdfd;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            background: var(--text-muted);
+            color: white;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 10px;
+            line-height: 15px;
+            font-weight: bold;
+            cursor: help;
+            margin-left: 6px;
+            flex-shrink: 0;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #2b2d42;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 11px;
+            font-weight: normal;
+            line-height: 1.4;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">System Doboru Diet</a>
+        <nav class="nav-menu">
+            <a href="{% url 'diet_list' %}">Katalog Diet</a>
+            <a href="{% url 'dish_list' %}">Katalog Dań</a>
+            <a href="{% url 'calculator' %}">Kalkulator Kaloryczny</a>
+            <a href="{% url 'profile' %}">Mój Profil</a>
+            <a href="{% url 'logout' %}" class="btn-logout">Wyloguj</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <div class="welcome-box">
+            <h1>Witaj, {{ user.username }}</h1>
+            <p>Panel zarządzania profilem użytkownika i spersonalizowanymi danymi analitycznymi.</p>
+        </div>
+
+        <div class="cards-grid">
+            
+            <div class="card">
+                <div>
+                    <h3>Profil Biometryczny i Kaloryczny</h3>
+                    <div class="card-body">
+                        {% if calorie_profile %}
+                            <div class="calc-content">
+                                <p>
+                                    <span><strong>Wskaźnik BMI:</strong></span>
+                                    <span>{{ calorie_profile.bmi_value }} (<em>{{ calorie_profile.bmi_category }}</em>)
+                                        <span class="tooltip">?
+                                            <span class="tooltiptext">
+                                                Wskaźnik określający relację masy ciała do wzrostu.<br>
+                                                Pomaga wstępnie ocenić masę ciała, ale nie uwzględnia m.in. ilości mięśni ani rozmieszczenia tkanki tłuszczowej.
+                                            </span>
+                                        </span>
+                                    </span>
+                                </p>
+                                <p>
+                                    <span><strong>BMR / TDEE:</strong></span>
+                                    <span>{{ calorie_profile.bmr_value }} kcal / {{ calorie_profile.tdee_value }} kcal
+                                        <span class="tooltip">?
+                                            <span class="tooltiptext">
+                                                BMR to ilość energii potrzebna organizmowi w spoczynku do podtrzymania podstawowych funkcji życiowych.<br><br>
+                                                TDEE to szacunkowe całkowite dzienne zapotrzebowanie energetyczne, uwzględniające również aktywność fizyczną.
+                                            </span>
+                                        </span>
+                                    </span>
+                                </p>
+                                <p>
+                                    <span><strong>Makroskładniki:</strong></span>
+                                    <span>B: {{ calorie_profile.protein_grams }}g | T: {{ calorie_profile.fat_grams }}g | W: {{ calorie_profile.carbs_grams }}g
+                                        <span class="tooltip">?
+                                            <span class="tooltiptext">
+                                                Szacunkowa dzienna ilość makroskładników:<br><br>
+                                                B — białko: wspiera budowę i regenerację tkanek.<br><br>
+                                                T — tłuszcze: dostarczają energii i wspierają m.in. produkcję hormonów oraz wchłanianie witamin.<br><br>
+                                                W — węglowodany: stanowią ważne źródło energii
+                                            </span>
+                                        </span>
+                                    </span>
+                                </p>
+                                <p>
+                                    <span><strong>Zapotrzebowanie na wodę:</strong></span>
+                                    <span>{{ calorie_profile.water_intake }} L / dobę
+                                        <span class="tooltip">?
+                                            <span class="tooltiptext">
+                                                Szacunkowa dzienna ilość płynów wspierająca prawidłowe nawodnienie organizmu.<br>
+                                                Zapotrzebowanie zależy m.in. od aktywności fizycznej, temperatury otoczenia i indywidualnych potrzeb.
+                                            </span>
+                                        </span>
+                                    </span>
+                                </p>
+                                <p style="margin-top: 4px; font-size: 0.8rem; color: var(--text-muted);">
+                                    <em>Dane: {{ calorie_profile.weight }} kg, {{ calorie_profile.height }} cm, {{ calorie_profile.age }} lat, PAL: {{ calorie_profile.pal }}</em>
+                                </p>
+                            </div>
+                        {% else %}
+                            <p style="color: var(--text-muted); font-style: italic; font-size: 0.88rem;">Brak obliczonego profilu kalorycznego w systemie.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'calculator' %}" class="btn">{% if calorie_profile %}Zaktualizuj parametry{% else %}Oblicz parametry{% endif %}</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3>Rekomendacje z Quizu</h3>
+                    <div class="card-body">
+                        {% if top_results %}
+                            <div class="recommendations-list">
+                                {% for res in top_results %}
+                                    <div class="diet-card {% if forloop.first %}top-match{% endif %}">
+                                        <div class="diet-info">
+                                            <h4>
+                                                {% if forloop.first %}🌟 Główny wybór: {% else %}Alt. {{ forloop.counter }}: {% endif %}
+                                                <a href="{% url 'diet_detail' res.diet.id %}">{{ res.diet.name }}</a>
+                                            </h4>
+                                            <p>{{ res.diet.description|truncatechars:45 }}</p>
+                                        </div>
+                                        <div class="diet-meta">
+                                            <span class="score-badge">{{ res.score }} pkt</span>
+                                            <a href="{% url 'diet_detail' res.diet.id %}" class="link-btn">Szczegóły →</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p style="color: var(--text-muted); font-style: italic; font-size: 0.88rem;">Brak wyników quizu. Wypełnij test, aby wygenerować rekomendacje.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'quiz' %}" class="btn">{% if top_results %}Powtórz quiz{% else %}Uruchom quiz{% endif %}</a>
+            </div>
+
+            <div class="card">
+                <div>
+                    <h3>Ulubione Elementy</h3>
+                    <div class="card-body">
+                        <div class="tabs-header">
+                            <button onclick="switchTab('diets')" id="btn-diets" class="tab-btn active">Diety</button>
+                            <button onclick="switchTab('dishes')" id="btn-dishes" class="tab-btn">Dania</button>
+                        </div>
+
+                        <div id="tab-diets" class="favorites-list">
+                            {% if favorite_diets %}
+                                {% for diet in favorite_diets %}
+                                    <div class="favorite-item">
+                                        <div>
+                                            <strong style="font-size: 0.88rem; color: var(--text-main);">{{ diet.name }}</strong>
+                                            <div><a href="{% url 'diet_detail' diet.id %}" class="link-btn">Szczegóły →</a></div>
+                                        </div>
+                                        <a href="{% url 'toggle_diet_favorite' diet.id %}" title="Usuń z ulubionych" style="text-decoration: none; font-size: 1.1rem;">⭐</a>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p style="color: var(--text-muted); font-style: italic; font-size: 0.85rem; text-align: center; margin: 15px 0;">Brak ulubionych diet.</p>
+                            {% endif %}
+                        </div>
+
+                        <div id="tab-dishes" class="favorites-list" style="display: none;">
+                            {% if favorite_dishes %}
+                                {% for dish in favorite_dishes %}
+                                    <div class="favorite-item">
+                                        <div>
+                                            <strong style="font-size: 0.88rem; color: var(--text-main);">{{ dish.name }}</strong>
+                                            <div><a href="{% url 'dish_detail' dish.id %}" class="link-btn">Szczegóły →</a></div>
+                                        </div>
+                                        <a href="{% url 'toggle_dish_favorite' dish.id %}" title="Usuń z ulubionych" style="text-decoration: none; font-size: 1.1rem;">⭐</a>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p style="color: var(--text-muted); font-style: italic; font-size: 0.85rem; text-align: center; margin: 15px 0;">Brak ulubionych dań.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            const dietsTab = document.getElementById('tab-diets');
+            const dishesTab = document.getElementById('tab-dishes');
+            const btnDiets = document.getElementById('btn-diets');
+            const btnDishes = document.getElementById('btn-dishes');
+
+            if (tab === 'diets') {
+                dietsTab.style.display = 'flex';
+                dishesTab.style.display = 'none';
+                btnDiets.classList.add('active');
+                btnDishes.classList.remove('active');
+            } else {
+                dietsTab.style.display = 'none';
+                dishesTab.style.display = 'flex';
+                btnDishes.classList.add('active');
+                btnDiets.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

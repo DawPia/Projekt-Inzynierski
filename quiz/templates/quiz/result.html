@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wynik Quizu - System Doboru Diet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --primary-hover: #1b4332;
+            --accent-green: #52b788;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-green);
+        }
+
+        .nav-menu .btn-nav {
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-nav:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .nav-menu .btn-logout {
+            color: #dc3545;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: var(--primary-green);
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary-green);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .result-card h2 {
+            margin-top: 0;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .score-badge {
+            display: inline-block;
+            font-weight: 600;
+            color: var(--primary-green);
+            background: #e8f5e9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid #c8e6c9;
+            margin-bottom: 15px;
+        }
+
+        .result-card p {
+            color: var(--text-muted);
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .alert-card {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .alert-card h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        .all-results {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .all-results h3 {
+            margin-top: 0;
+            color: var(--text-main);
+            font-size: 1.15rem;
+            margin-bottom: 15px;
+        }
+
+        .all-results ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .all-results li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .all-results li:last-child {
+            border-bottom: none;
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-green);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">System Doboru Diet</a>
+        <nav class="nav-menu">
+            <a href="{% url 'diet_list' %}">Katalog Diet</a>
+            <a href="{% url 'dish_list' %}">Katalog Dań</a>
+            <a href="{% url 'calculator' %}">Kalkulator Kaloryczny</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Mój Profil</a>
+                <a href="{% url 'logout' %}" class="btn-logout">Wyloguj</a>
+            {% else %}
+                <a href="{% url 'login' %}">Logowanie</a>
+                <a href="{% url 'register' %}" class="btn-nav">Rejestracja</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Rekomendacja Diety</h1>
+
+        {% if best_match and best_score > 0 %}
+            <div class="result-card">
+                <h2>{{ best_match.name }}</h2>
+                <div class="score-badge">Dopasowanie: {{ best_score }} pkt</div>
+                <p>{{ best_match.description }}</p>
+            </div>
+        {% else %}
+            <div class="alert-card">
+                <h2>Brak jednoznacznego dopasowania</h2>
+                <p>Twoje odpowiedzi nie wskazały jednoznacznie na żadną z diet dostępnych w bazie.</p>
+            </div>
+        {% endif %}
+
+        <div class="all-results">
+            <h3>Wyniki dla wszystkich diet:</h3>
+            <ul>
+                {% for item in all_results %}
+                    <li>
+                        <span>{{ item.diet.name }}</span>
+                        <strong>{{ item.score }} pkt</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="actions-group">
+            <a href="{% url 'home' %}" class="btn btn-primary">Wróć na stronę główną</a>
+            <a href="{% url 'quiz' %}" class="btn btn-outline">Wypełnij quiz ponownie</a>
+            <a href="{% url 'profile' %}" class="btn btn-secondary">Mój profil</a>
+        </div>
+    </div>
+
+</body>
+</html>

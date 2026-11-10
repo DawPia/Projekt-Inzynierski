@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja - System Doboru Diet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --primary-hover: #1b4332;
+            --accent-green: #52b788;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-green);
+        }
+
+        .nav-menu .btn-nav {
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-nav:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        h2 {
+            color: var(--primary-green);
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--accent-green);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        .err {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .switch-auth {
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 0;
+            color: var(--text-muted);
+        }
+
+        .switch-auth a {
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">System Doboru Diet</a>
+        <nav class="nav-menu">
+            <a href="{% url 'diet_list' %}">Katalog Diet</a>
+            <a href="{% url 'dish_list' %}">Katalog Dań</a>
+            <a href="{% url 'calculator' %}">Kalkulator Kaloryczny</a>
+            <a href="{% url 'login' %}">Logowanie</a>
+            <a href="{% url 'register' %}" class="btn-nav">Rejestracja</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Rejestracja konta</h2>
+            {% if error %}
+                <div class="err">{{ error }}</div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <label>Login:</label>
+                <input type="text" name="username" required>
+                
+                <label>Hasło:</label>
+                <input type="password" name="password" required>
+                
+                <button type="submit">Zarejestruj się</button>
+            </form>
+            <p class="switch-auth">Masz już konto? <a href="{% url 'login' %}">Zaloguj się</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

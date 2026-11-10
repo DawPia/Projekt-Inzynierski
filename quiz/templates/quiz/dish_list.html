@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Katalog Dań - System Doboru Diet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --primary-hover: #1b4332;
+            --accent-green: #52b788;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-green);
+        }
+
+        .nav-menu .btn-nav {
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-nav:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .nav-menu .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-logout:hover {
+            background: #c82333;
+            color: white;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .filter-section {
+            background: var(--card-bg);
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-form input[type="text"], .filter-form select {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+
+        .filter-form input[type="text"]:focus, .filter-form select:focus {
+            border-color: var(--accent-green);
+        }
+
+        .filter-form input[type="text"] {
+            flex-grow: 1;
+        }
+
+        .filter-form button {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .filter-form button:hover {
+            background: var(--primary-hover);
+        }
+
+        .clear-btn {
+            color: #dc3545;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 10px 0;
+        }
+
+        .clear-btn:hover {
+            text-decoration: underline;
+        }
+
+        .dish-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .dish-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary-green);
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dish-card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+        }
+
+        .dish-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .dish-card h2 {
+            margin: 0;
+            font-size: 1.15rem;
+        }
+
+        .dish-card h2 a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .dish-card h2 a:hover {
+            color: var(--primary-green);
+        }
+
+        .dish-fav-link {
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .dish-meta {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-bottom: 15px;
+        }
+
+        .dish-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: auto;
+        }
+
+        .kcal-badge {
+            background: #e8f5e9;
+            color: var(--primary-green);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #c8e6c9;
+        }
+
+        .btn-details {
+            background: var(--bg-color);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-details:hover {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+        }
+
+        .empty-alert {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">System Doboru Diet</a>
+        <nav class="nav-menu">
+            <a href="{% url 'diet_list' %}">Katalog Diet</a>
+            <a href="{% url 'dish_list' %}">Katalog Dań</a>
+            <a href="{% url 'calculator' %}">Kalkulator Kaloryczny</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Mój Profil</a>
+                <a href="{% url 'logout' %}" class="btn-logout">Wyloguj</a>
+            {% else %}
+                <a href="{% url 'login' %}">Logowanie</a>
+                <a href="{% url 'register' %}" class="btn-nav">Rejestracja</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Katalog Dań</h1>
+        
+        <div class="filter-section">
+            <form method="GET" class="filter-form">
+                <input type="text" name="q" placeholder="Szukaj dania, składników..." value="{{ query }}">
+                
+                <select name="diet">
+                    <option value="">-- Wszystkie diety --</option>
+                    {% for d in diets %}
+                        <option value="{{ d.id }}" {% if selected_diet == d.id|slugify %}selected{% endif %}>{{ d.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">Szukaj</button>
+                {% if query or selected_diet %}
+                    <a href="{% url 'dish_list' %}" class="clear-btn">Wyczyść filtry</a>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="dish-grid">
+            {% if dishes %}
+                {% for dish in dishes %}
+                    <div class="dish-card">
+                        <div>
+                            <div class="dish-header-row">
+                                <h2>
+                                    <a href="{% url 'dish_detail' dish.id %}">{{ dish.name }}</a>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div class="dish-footer">
+                            <span class="kcal-badge">🔥 {{ dish.kcal }} kcal</span>
+                            <a href="{% url 'dish_detail' dish.id %}" class="btn-details">Szczegóły →</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-alert">
+                    Brak dań spełniających kryteria wyszukiwania.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

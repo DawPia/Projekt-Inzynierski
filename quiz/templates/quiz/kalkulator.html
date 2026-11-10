@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kalkulator Kaloryczny - System Doboru Diet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --primary-hover: #1b4332;
+            --accent-green: #52b788;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-green);
+        }
+
+        .nav-menu .btn-nav {
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-nav:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .nav-menu .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu .btn-logout:hover {
+            background: #c82333;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 35px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .card > p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+
+        input[type="number"]:focus, select:focus {
+            border-color: var(--accent-green);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-green);
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95srem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .result-box {
+            background: #f4fbf7;
+            border: 1px solid #c8e6c9;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        .result-box h3 {
+            margin-top: 0;
+            color: var(--primary-green);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid #c8e6c9;
+            padding-bottom: 8px;
+        }
+
+        .result-box p {
+            margin: 0 0 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .result-box p:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            background: var(--text-muted);
+            color: white;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 10px;
+            line-height: 16px;
+            font-weight: bold;
+            cursor: help;
+            margin-left: 6px;
+            flex-shrink: 0;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #2b2d42;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 11px;
+            font-weight: normal;
+            line-height: 1.4;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2b2d42 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">System Doboru Diet</a>
+        <nav class="nav-menu">
+            <a href="{% url 'diet_list' %}">Katalog Diet</a>
+            <a href="{% url 'dish_list' %}">Katalog Dań</a>
+            <a href="{% url 'calculator' %}">Kalkulator Kaloryczny</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Mój Profil</a>
+                <a href="{% url 'logout' %}" class="btn-logout">Wyloguj</a>
+            {% else %}
+                <a href="{% url 'login' %}">Logowanie</a>
+                <a href="{% url 'register' %}" class="btn-nav">Rejestracja</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h1>Kalkulator Kaloryczny</h1>
+            <p>Wprowadź swoje parametry biometryczne, aby obliczyć wskaźnik BMI, zapotrzebowanie energetyczne (BMR, TDEE), makroskładniki oraz ilość wody.</p>
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="weight">Waga (kg):</label>
+                    <input type="number" step="0.1" id="weight" name="weight" value="{% if existing_profile %}{{ existing_profile.weight }}{% endif %}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="height">Wzrost (cm):</label>
+                    <input type="number" step="0.1" id="height" name="height" value="{% if existing_profile %}{{ existing_profile.height }}{% endif %}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Wiek (lata):</label>
+                    <input type="number" id="age" name="age" value="{% if existing_profile %}{{ existing_profile.age }}{% endif %}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Płeć:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="mężczyzna" {% if existing_profile and existing_profile.gender == 'mężczyzna' %}selected{% endif %}>Mężczyzna</option>
+                        <option value="kobieta" {% if existing_profile and existing_profile.gender == 'kobieta' %}selected{% endif %}>Kobieta</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="pal">Poziom aktywności fizycznej (PAL):</label>
+                    <select id="pal" name="pal" required>
+                        <option value="1.2" {% if existing_profile and existing_profile.pal == 1.2 %}selected{% endif %}>1.2 - Siedzący tryb życia (brak treningów)</option>
+                        <option value="1.4" {% if existing_profile and existing_profile.pal == 1.4 %}selected{% endif %}>1.4 - Lekka aktywność (trening 1-3x w tygodniu)</option>
+                        <option value="1.6" {% if existing_profile and existing_profile.pal == 1.6 %}selected{% endif %}>1.6 - Umiarkowana aktywność (trening 3-5x w tygodniu)</option>
+                        <option value="1.8" {% if existing_profile and existing_profile.pal == 1.8 %}selected{% endif %}>1.8 - Wysoka aktywność (ciężki trening 6-7x w tygodniu)</option>
+                        <option value="2.0" {% if existing_profile and existing_profile.pal == 2.0 %}selected{% endif %}>2.0 - Bardzo wysoka aktywność (sport zawodowy)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Oblicz i Zapisz Profil</button>
+            </form>
+
+            {% if existing_profile %}
+                <div class="result-box">
+                    <h3>Ostatnio obliczone wyniki:</h3>
+                    <p>
+                        <span><strong>Wskaźnik BMI:</strong></span>
+                        <span>{{ existing_profile.bmi_value }} (<em>{{ existing_profile.bmi_category }}</em>)
+                            <span class="tooltip">?
+                                <span class="tooltiptext">
+                                    Wskaźnik określający relację masy ciała do wzrostu.<br>
+                                    Pomaga wstępnie ocenić masę ciała, ale nie uwzględnia m.in. ilości mięśni ani rozmieszczenia tkanki tłuszczowej.
+                                </span>
+                            </span>
+                        </span>
+                    </p>
+                    <p>
+                        <span><strong>BMR / TDEE:</strong></span>
+                        <span>{{ existing_profile.bmr_value }} kcal / {{ existing_profile.tdee_value }} kcal
+                            <span class="tooltip">?
+                                <span class="tooltiptext">
+                                    BMR to ilość energii potrzebna organizmowi w spoczynku do podtrzymania podstawowych funkcji życiowych.<br><br>
+                                    TDEE to szacunkowe całkowite dzienne zapotrzebowanie energetyczne, uwzględniające również aktywność fizyczną.
+                                </span>
+                            </span>
+                        </span>
+                    </p>
+                    <p>
+                        <span><strong>Makroskładniki:</strong></span>
+                        <span>B: {{ existing_profile.protein_grams }}g | T: {{ existing_profile.fat_grams }}g | W: {{ existing_profile.carbs_grams }}g
+                            <span class="tooltip">?
+                                <span class="tooltiptext">
+                                    Szacunkowa dzienna ilość makroskładników:<br><br>
+                                    B — białko: wspiera budowę i regenerację tkanek.<br><br>
+                                    T — tłuszcze: dostarczają energii i wspierają m.in. produkcję hormonów oraz wchłanianie witamin.<br><br>
+                                    W — węglowodany: stanowią ważne źródło energii
+                                </span>
+                            </span>
+                        </span>
+                    </p>
+                    <p>
+                        <span><strong>Zapotrzebowanie na wodę:</strong></span>
+                        <span>{{ existing_profile.water_intake }} l / dobę
+                            <span class="tooltip">?
+                                <span class="tooltiptext">
+                                    Szacunkowa dzienna ilość płynów wspierająca prawidłowe nawodnienie organizmu.<br>
+                                    Zapotrzebowanie zależy m.in. od aktywności fizycznej, temperatury otoczenia i indywidualnych potrzeb.
+                                </span>
+                            </span>
+                        </span>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
