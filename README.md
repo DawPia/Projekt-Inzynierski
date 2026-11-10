@@ -33,18 +33,6 @@ cd Projekt-Inzynierski
 pip install -r requirements.txt
 ```
 
-### 4. Inicjalizacja bazy danych i migracji
-
-```bash
-python manage.py migrate
-```
-
-### 5. (Opcjonalnie) Tworzenie konta administratora
-
-```bash
-python manage.py createsuperuser
-```
-
 ---
 
 ## Uruchomienie aplikacji
